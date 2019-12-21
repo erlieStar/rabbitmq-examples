@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.quickstart;
+package com.javashitang.rabbitmq.chapter_1;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
