@@ -1,10 +1,10 @@
-package com.javashitang.rabbitmq.api.exchange.fanout;
+package com.javashitang.rabbitmq.chapter_2.direct;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-public class Producer4FanoutExchange {
+public class Producer4DirectExchange {
 
     public static void main(String[] args) throws Exception {
 
@@ -16,10 +16,11 @@ public class Producer4FanoutExchange {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        String exchangeName = "test_fanout_exchange";
+        String exchangeName = "test_direct_exchange";
+        String routingKey = "test.direct";
 
         String msg = "hello RabbitMQ";
-        channel.basicPublish(exchangeName, "", null, msg.getBytes());
+        channel.basicPublish(exchangeName, routingKey, null, msg.getBytes());
 
         channel.close();
         connection.close();

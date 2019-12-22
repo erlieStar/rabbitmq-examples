@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.api.exchange.direct;
+package com.javashitang.rabbitmq.chapter_2.direct;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

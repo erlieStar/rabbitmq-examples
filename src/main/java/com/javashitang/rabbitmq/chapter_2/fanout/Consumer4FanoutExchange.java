@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.api.exchange.fanout;
+package com.javashitang.rabbitmq.chapter_2.fanout;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
