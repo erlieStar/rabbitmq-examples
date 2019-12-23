@@ -1,12 +1,6 @@
-package com.javashitang.rabbitmq.enjoy.ackfalse;
+package com.javashitang.rabbitmq.chapter_4;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import com.javashitang.rabbitmq.enjoy.exchange.direct.DirectProducer;
 
 import java.io.IOException;
@@ -23,8 +17,8 @@ public class AckFalseConsumerA {
         factory.setHost("www.erlie.cc");
 
         Connection connection = factory.newConnection();
-        final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, "direct");
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "focuserror";
         channel.queueDeclare(queueName, false, false, false, null);
@@ -33,7 +27,8 @@ public class AckFalseConsumerA {
         channel.queueBind(queueName, DirectProducer.EXCHANGE_NAME, bindingKey);
 
         final Consumer consumer = new DefaultConsumer(channel) {
-            @Override public void handleDelivery(String consumerTag, Envelope envelope,
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 System.out.println(envelope.getRoutingKey() + " " + message);

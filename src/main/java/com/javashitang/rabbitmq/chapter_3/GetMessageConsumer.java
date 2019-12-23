@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.api.message;
+package com.javashitang.rabbitmq.chapter_3;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -6,7 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.GetResponse;
 
-public class Consumer {
+public class GetMessageConsumer {
 
     public static void main(String[] args) throws Exception {
 

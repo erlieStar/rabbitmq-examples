@@ -1,12 +1,6 @@
-package com.javashitang.rabbitmq.enjoy.ackfalse;
+package com.javashitang.rabbitmq.chapter_4;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import com.javashitang.rabbitmq.enjoy.exchange.direct.DirectProducer;
 
 import java.io.IOException;
@@ -23,8 +17,8 @@ public class AckFalseConsumerB {
         factory.setHost("www.erlie.cc");
 
         Connection connection = factory.newConnection();
-        final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, "direct");
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "focuserror";
         channel.queueDeclare(queueName, false, false, false, null);

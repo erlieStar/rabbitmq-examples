@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.api.message;
+package com.javashitang.rabbitmq.chapter_3;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -8,7 +8,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Producer {
+public class GetMessageProducer {
 
     public static void main(String[] args) throws Exception {
 

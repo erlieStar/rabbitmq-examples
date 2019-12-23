@@ -1,5 +1,6 @@
-package com.javashitang.rabbitmq.enjoy.ackfalse;
+package com.javashitang.rabbitmq.chapter_4;
 
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -20,7 +21,7 @@ public class AckFalseProducer {
         factory.setHost("www.erlie.cc");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(EXCHANGE_NAME, "direct");
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         for (int i = 0; i < 3; i++) {
             String message = "Hello World" + (i + 1);
