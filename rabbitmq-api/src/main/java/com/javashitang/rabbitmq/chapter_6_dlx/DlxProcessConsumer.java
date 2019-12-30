@@ -25,14 +25,14 @@ public class DlxProcessConsumer {
         factory.setHost("www.javashitang.com");
 
         Connection connection = factory.newConnection();
-        final Channel channel = connection.createChannel();
+        Channel channel = connection.createChannel();
         channel.exchangeDeclare(DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
         String queueName = "dlx_accept";
         channel.queueDeclare(queueName, false, false, false, null);
         channel.queueBind(queueName, DLX_EXCHANGE_NAME, "#");
 
-        final Consumer consumer = new DefaultConsumer(channel) {
+        Consumer consumer = new DefaultConsumer(channel) {
             @Override public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");

@@ -1,6 +1,7 @@
-package com.javashitang.rabbitmq.chapter_5_backupexchange;
+package com.javashitang.rabbitmq.chapter_5_backupExchange;
 
 import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -23,19 +24,20 @@ public class BackupExConsumer {
         factory.setHost("www.javashitang.com");
 
         Connection connection = factory.newConnection();
-        final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, "direct");
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "focusother";
         channel.queueDeclare(queueName, false, false, false, null);
 
-        String bindingKey = "error";
         // # 0或多个单词
         // * 一个单词
         channel.queueBind(queueName, BackupExProducer.BAK_EXCHANGE_NAME, "#");
 
-        final Consumer consumer = new DefaultConsumer(channel) {
-            @Override public void handleDelivery(String consumerTag, Envelope envelope,
+        Consumer consumer = new DefaultConsumer(channel) {
+
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 System.out.println(envelope.getRoutingKey() + " " + message);

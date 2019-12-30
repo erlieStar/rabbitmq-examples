@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_5_backupexchange;
+package com.javashitang.rabbitmq.chapter_5_backupExchange;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
 public class BackupExProducer {
 
     public final static String EXCHANGE_NAME = "main-exchange";
-    public final static String BAK_EXCHANGE_NAME = "ae";
+    public final static String BAK_EXCHANGE_NAME = "backup-exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -38,7 +38,7 @@ public class BackupExProducer {
 
         String[] logLevel ={"error","info","warning"};
         for (int i = 0; i < 3; i++) {
-            String routingKey = logLevel[i%3];
+            String routingKey = logLevel[i % 3];
             String message = "Hello World" + (i + 1);
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
         }

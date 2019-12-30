@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_3_getmessage;
+package com.javashitang.rabbitmq.chapter_3_getMessage;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;

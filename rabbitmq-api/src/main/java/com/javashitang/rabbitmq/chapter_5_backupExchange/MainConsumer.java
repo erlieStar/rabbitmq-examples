@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_5_backupexchange;
+package com.javashitang.rabbitmq.chapter_5_backupExchange;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -23,7 +23,7 @@ public class MainConsumer {
         factory.setHost("www.javashitang.com");
 
         Connection connection = factory.newConnection();
-        final Channel channel = connection.createChannel();
+        Channel channel = connection.createChannel();
         channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, "direct");
 
         String queueName = "focuserror";
@@ -32,7 +32,7 @@ public class MainConsumer {
         String bindingKey = "error";
         channel.queueBind(queueName, DirectProducer.EXCHANGE_NAME, bindingKey);
 
-        final Consumer consumer = new DefaultConsumer(channel) {
+        Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -42,5 +42,7 @@ public class MainConsumer {
         };
 
         channel.basicConsume(queueName, true, consumer);
+        channel.close();
+        connection.close();
     }
 }
