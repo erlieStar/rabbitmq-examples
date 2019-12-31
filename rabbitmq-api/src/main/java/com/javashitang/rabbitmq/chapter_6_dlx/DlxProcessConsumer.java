@@ -33,7 +33,8 @@ public class DlxProcessConsumer {
         channel.queueBind(queueName, DLX_EXCHANGE_NAME, "#");
 
         Consumer consumer = new DefaultConsumer(channel) {
-            @Override public void handleDelivery(String consumerTag, Envelope envelope,
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 System.out.println(envelope.getRoutingKey() + " " + message);

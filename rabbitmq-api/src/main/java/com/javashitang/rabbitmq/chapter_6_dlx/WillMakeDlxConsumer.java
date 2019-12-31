@@ -1,7 +1,5 @@
 package com.javashitang.rabbitmq.chapter_6_dlx;
 
-import com.javashitang.rabbitmq.chapter_6_dlx.DlxProcessConsumer;
-import com.javashitang.rabbitmq.chapter_6_dlx.DlxProducer;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -40,8 +38,10 @@ public class WillMakeDlxConsumer {
 
         channel.queueBind(queueName, DlxProducer.EXCHANGE_NAME, "#");
 
-        final Consumer consumer = new DefaultConsumer(channel) {
-            @Override public void handleDelivery(String consumerTag, Envelope envelope,
+        Consumer consumer = new DefaultConsumer(channel) {
+
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
                 if (envelope.getRoutingKey().equals("error")) {

@@ -11,40 +11,40 @@ import java.util.concurrent.TimeoutException;
 
 public class AsyncConfirm {
 
-		public final static String EXCHANGE_NAME = "async_confirm_exchange";
+	public final static String EXCHANGE_NAME = "async_confirm_exchange";
 
-		public static void main(String[] args) throws IOException, TimeoutException {
-				ConnectionFactory factory = new ConnectionFactory();
-				factory.setHost("www.javashitang.com");
+	public static void main(String[] args) throws IOException, TimeoutException {
+		ConnectionFactory factory = new ConnectionFactory();
+		factory.setHost("www.javashitang.com");
 
-				Connection connection = factory.newConnection();
-				Channel channel = connection.createChannel();
-				channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+		channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-				// 启用发布者确认模式
-				channel.confirmSelect();
+		// 启用发布者确认模式
+		channel.confirmSelect();
 
-				channel.addConfirmListener(new ConfirmListener() {
-						@Override
-						public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+		channel.addConfirmListener(new ConfirmListener() {
+			@Override
+			public void handleAck(long deliveryTag, boolean multiple) throws IOException {
 
-						}
+			}
 
-						@Override
-						public void handleNack(long deliveryTag, boolean multiple)
-								throws IOException {
+			@Override
+			public void handleNack(long deliveryTag, boolean multiple)
+					throws IOException {
 
-						}
-				});
+			}
+		});
 
-				String[] logLevel = {"error", "warning"};
-				for (int i = 0; i < 10; i++) {
-						String routingKey = logLevel[i % 2];
-						String message = String.format("hello rabbit %s", i);
-						channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
-				}
-
-				channel.close();
-				connection.close();
+		String[] logLevel = {"error", "warning"};
+		for (int i = 0; i < 10; i++) {
+			String routingKey = logLevel[i % 2];
+			String message = String.format("hello rabbit %s", i);
+			channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
 		}
+
+		channel.close();
+		connection.close();
+	}
 }
