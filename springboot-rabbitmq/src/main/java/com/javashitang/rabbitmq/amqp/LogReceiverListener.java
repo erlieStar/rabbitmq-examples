@@ -16,5 +16,10 @@ public class LogReceiverListener implements ChannelAwareMessageListener {
     public void onMessage(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
         System.out.println("收到的消息为 " + msg);
+        try {
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
+        }
     }
 }
