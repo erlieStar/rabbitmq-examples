@@ -1,11 +1,11 @@
-package com.javashitang.rabbitmq.chapter_2_exchange.fanout;
+package com.javashitang.rabbitmq.chapter_2_exchange.topic;
 
 import com.javashitang.rabbitmq.chapter_2_exchange.direct.Producer4DirectExchange;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
-public class Consumer4FanoutExchange {
+public class AllConsumer {
 
     public static void main(String[] args) throws Exception {
 
@@ -18,10 +18,9 @@ public class Consumer4FanoutExchange {
         Channel channel = connection.createChannel();
 
         // 声明一个交换机
-        channel.exchangeDeclare(Producer4FanoutExchange.EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
-
+        channel.exchangeDeclare(Producer4TopicExchange.EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
         String queueName = "all_queue";
-        String bindingKey = "info";
+        String bindingKey = "#";
 
         channel.queueDeclare(queueName, false, false, false ,null);
         channel.queueBind(queueName, Producer4DirectExchange.EXCHANGE_NAME, bindingKey);
@@ -35,6 +34,5 @@ public class Consumer4FanoutExchange {
         };
 
         channel.basicConsume(queueName , true, consumer);
-
     }
 }

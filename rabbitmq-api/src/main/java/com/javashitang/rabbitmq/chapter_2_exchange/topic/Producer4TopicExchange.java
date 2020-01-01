@@ -4,7 +4,11 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
+import java.util.Arrays;
+
 public class Producer4TopicExchange {
+
+    public final static String EXCHANGE_NAME = "topic_logs";
 
     public static void main(String[] args) throws Exception {
 
@@ -16,15 +20,18 @@ public class Producer4TopicExchange {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        String exchangeName = "test_topic_exchange";
-        String routingKey1 = "user.save";
-        String routingKey2 = "user.update";
-        String routingKey3 = "user.delete.abc";
-
-        String msg = "hello RabbitMQ";
-        channel.basicPublish(exchangeName, routingKey1, null, msg.getBytes());
-        channel.basicPublish(exchangeName, routingKey2, null, msg.getBytes());
-        channel.basicPublish(exchangeName, routingKey3, null, msg.getBytes());
+        String[] logLevel = {"info", "warning", "error"};
+        String[] module = {"driver", "login", "bms"};
+        String[] score = {"A" , "B", "C"};
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    String routingKey = String.join(",", Arrays.asList(logLevel[i % 3], module[j % 3], score[k % 3]));
+                    String message = "hello rabbitmq routingKey is " + routingKey;
+                    channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+                }
+            }
+        }
 
         channel.close();
         connection.close();

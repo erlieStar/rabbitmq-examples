@@ -7,7 +7,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import com.javashitang.rabbitmq.enjoy.exchange.direct.DirectProducer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

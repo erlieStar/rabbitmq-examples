@@ -1,7 +1,6 @@
 package com.javashitang.rabbitmq.chapter_4_ackfalse;
 
 import com.rabbitmq.client.*;
-import com.javashitang.rabbitmq.enjoy.exchange.direct.DirectProducer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;

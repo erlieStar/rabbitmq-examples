@@ -1,11 +1,8 @@
 package com.javashitang.rabbitmq.chapter_2_exchange.direct;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.GetResponse;
+import com.rabbitmq.client.*;
+
+import java.io.IOException;
 
 public class Consumer4DirectExchange {
 
@@ -15,35 +12,32 @@ public class Consumer4DirectExchange {
         connectionFactory.setHost("www.javashitang.com");
         connectionFactory.setPort(5672);
         connectionFactory.setVirtualHost("/");
-        // 支持自动重连，每3秒连接一次
-        connectionFactory.setAutomaticRecoveryEnabled(true);
-        connectionFactory.setNetworkRecoveryInterval(3000);
 
         Connection connection = connectionFactory.newConnection();
-
         Channel channel = connection.createChannel();
 
-        String exchangeName = "test_direct_exchange";
-        String exchangeType = "direct";
-        String queueName = "test_direct_queue";
-        String routingKey = "test.direct";
-
         // 声明一个交换机
-        channel.exchangeDeclare(exchangeName, exchangeType, true, false, false, null);
-        channel.queueDeclare(queueName, true, false, false ,null);
-        channel.queueBind(queueName, exchangeName, routingKey);
+        channel.exchangeDeclare(Producer4DirectExchange.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        Consumer consumer = new DefaultConsumer(channel);
+        String queueName = "info_queue";
+        String bindingKey = "info";
+        // 队列名
+        // durable 设置是否持久化。为true则设置队列为持久化。持久化的队列会存盘
+        // exclusive 设置是否排他。为true则设置队列为排他的，如果一个队列被声明为排他队列，该队列仅对首次声明它的连接可见，并在连接断开时自动删除
+        // autoDelete 设置是否自动删除。为true则设置队列为自动删除
+        // arguments 设置队列的其他一些参数
+        channel.queueDeclare(queueName, false, false, false ,null);
+        channel.queueBind(queueName, Producer4DirectExchange.EXCHANGE_NAME, bindingKey);
+
+        Consumer consumer = new DefaultConsumer(channel) {
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                String message = new String(body, "UTF-8");
+                System.out.println("routingKey is " + envelope.getRoutingKey() + " message is "  + message);
+            }
+        };
 
         channel.basicConsume(queueName , true, consumer);
-
-        while (true) {
-            // 7.获取消息
-            GetResponse getResponse = channel.basicGet(queueName, true);
-            String msg = new String(getResponse.getBody());
-            System.out.println("消费端 " + msg);
-        }
-
 
     }
 }

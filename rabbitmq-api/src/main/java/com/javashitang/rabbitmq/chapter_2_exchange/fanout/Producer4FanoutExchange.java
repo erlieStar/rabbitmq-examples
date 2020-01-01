@@ -6,6 +6,8 @@ import com.rabbitmq.client.ConnectionFactory;
 
 public class Producer4FanoutExchange {
 
+    public final static String EXCHANGE_NAME = "direct_logs";
+
     public static void main(String[] args) throws Exception {
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -16,10 +18,12 @@ public class Producer4FanoutExchange {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        String exchangeName = "test_fanout_exchange";
-
-        String msg = "hello RabbitMQ";
-        channel.basicPublish(exchangeName, "", null, msg.getBytes());
+        String[] logLevel = {"info", "warning", "error"};
+        for (int i = 0; i < 3; i++) {
+            String routingKey = logLevel[i % 3];
+            String message = "hello rabbitmq " + i;
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+        }
 
         channel.close();
         connection.close();

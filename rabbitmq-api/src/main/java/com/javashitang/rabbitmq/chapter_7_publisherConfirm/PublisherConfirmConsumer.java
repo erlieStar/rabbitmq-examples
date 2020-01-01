@@ -1,6 +1,5 @@
 package com.javashitang.rabbitmq.chapter_7_publisherConfirm;
 
-import com.javashitang.rabbitmq.enjoy.exchange.direct.DirectProducer;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
