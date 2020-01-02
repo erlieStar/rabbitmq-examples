@@ -4,7 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
-public class Producer4FanoutExchange {
+public class FanoutExchangeProducer {
 
     public final static String EXCHANGE_NAME = "direct_logs";
 
@@ -13,7 +13,6 @@ public class Producer4FanoutExchange {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         connectionFactory.setHost("www.javashitang.com");
         connectionFactory.setPort(5672);
-        connectionFactory.setVirtualHost("/");
 
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();

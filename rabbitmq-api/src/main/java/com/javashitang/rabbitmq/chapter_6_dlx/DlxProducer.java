@@ -28,7 +28,7 @@ public class DlxProducer {
 
         String[] logLevel ={"error","info","warning"};
         for (int i = 0; i < 3; i++) {
-            String routingKey = logLevel[i%3];
+            String routingKey = logLevel[i % 3];
             String message = "Hello World" + (i + 1);
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
         }

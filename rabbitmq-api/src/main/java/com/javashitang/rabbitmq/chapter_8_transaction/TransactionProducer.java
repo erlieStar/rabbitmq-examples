@@ -13,28 +13,29 @@ public class TransactionProducer {
 	public final static String EXCHANGE_NAME = "transaction_exchange";
 
 	public static void main(String[] args) throws IOException, TimeoutException {
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost("www.javashitang.com");
 
-		Connection connection = factory.newConnection();
-		Channel channel = connection.createChannel();
-		channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost("www.javashitang.com");
 
-		String[] logLevel = {"error", "warning"};
-		// 将当前信道设置成事务模式
-		channel.txSelect();
-		for (int i = 0; i < 10; i++) {
-			String routingKey = logLevel[i % 2];
-			String message = String.format("hello rabbit %s", i);
-			try {
-				channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
-				// 提交事务
-				channel.txCommit();
-			} catch (IOException e) {
-				e.printStackTrace();
-				// 回滚事务
-				channel.txRollback();
-			}
+			Connection connection = factory.newConnection();
+			Channel channel = connection.createChannel();
+			channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+
+			String[] logLevel = {"error", "warning"};
+			// 将当前信道设置成事务模式
+			// channel.txSelect();
+			for (int i = 0; i < 10; i++) {
+					String routingKey = logLevel[i % 2];
+					String message = String.format("hello rabbit %s", i);
+					try {
+							channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
+							// 提交事务
+							channel.txCommit();
+					} catch (IOException e) {
+							e.printStackTrace();
+							// 回滚事务
+							channel.txRollback();
+					}
 		}
 
 		channel.close();

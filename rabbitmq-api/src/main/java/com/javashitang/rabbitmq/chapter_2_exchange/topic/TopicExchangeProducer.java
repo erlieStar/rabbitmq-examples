@@ -6,7 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 import java.util.Arrays;
 
-public class Producer4TopicExchange {
+public class TopicExchangeProducer {
 
     public final static String EXCHANGE_NAME = "topic_logs";
 
@@ -15,13 +15,12 @@ public class Producer4TopicExchange {
         ConnectionFactory connectionFactory = new ConnectionFactory();
         connectionFactory.setHost("www.javashitang.com");
         connectionFactory.setPort(5672);
-        connectionFactory.setVirtualHost("/");
 
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
         String[] logLevel = {"info", "warning", "error"};
-        String[] module = {"driver", "login", "bms"};
+        String[] module = {"driver", "login", "crm"};
         String[] score = {"A" , "B", "C"};
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {

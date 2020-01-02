@@ -26,10 +26,11 @@ public class QuickStartProducer {
         // 4.创建交换机
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
+        String routingKey = "error";
         // 5.通过channel发送数据
         for (int i = 0; i < 5; i++) {
             String msg = "hello RabbitMQ";
-            channel.basicPublish(EXCHANGE_NAME, "test001", null, msg.getBytes());
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, msg.getBytes());
         }
 
         // 6.记得要关闭相关的连接

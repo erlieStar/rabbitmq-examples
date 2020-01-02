@@ -8,6 +8,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -16,6 +17,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: lilimin
  * @Date: 2019/8/26 23:30
  */
+@Slf4j
 public class DlxProcessConsumer {
 
     public final static String DLX_EXCHANGE_NAME = "dlx_accept";
@@ -37,7 +39,7 @@ public class DlxProcessConsumer {
             public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println(envelope.getRoutingKey() + " " + message);
+                log.info("get message, routingKey: {}, message: {}", envelope.getRoutingKey(), message);
             }
         };
 

@@ -1,29 +1,29 @@
-package com.javashitang.rabbitmq.chapter_2_exchange.topic;
+package com.javashitang.rabbitmq.chapter_2_exchange.fanout;
 
-import com.javashitang.rabbitmq.chapter_2_exchange.direct.Producer4DirectExchange;
+import com.javashitang.rabbitmq.chapter_2_exchange.direct.DirectExchangeProducer;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
-public class AllConsumer {
+public class FanoutExchangeConsumer {
 
     public static void main(String[] args) throws Exception {
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
         connectionFactory.setHost("www.javashitang.com");
         connectionFactory.setPort(5672);
-        connectionFactory.setVirtualHost("/");
 
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
         // 声明一个交换机
-        channel.exchangeDeclare(Producer4TopicExchange.EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(FanoutExchangeProducer.EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+
         String queueName = "all_queue";
-        String bindingKey = "#";
+        String bindingKey = "info";
 
         channel.queueDeclare(queueName, false, false, false ,null);
-        channel.queueBind(queueName, Producer4DirectExchange.EXCHANGE_NAME, bindingKey);
+        channel.queueBind(queueName, DirectExchangeProducer.EXCHANGE_NAME, bindingKey);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
@@ -34,5 +34,6 @@ public class AllConsumer {
         };
 
         channel.basicConsume(queueName , true, consumer);
+
     }
 }

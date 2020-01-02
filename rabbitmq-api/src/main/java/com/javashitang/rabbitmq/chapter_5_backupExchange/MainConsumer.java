@@ -7,6 +7,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: lilimin
  * @Date: 2019/8/26 23:30
  */
+@Slf4j
 public class MainConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
@@ -23,20 +25,20 @@ public class MainConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(DirectProducer.EXCHANGE_NAME, "direct");
+        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, "direct");
 
-        String queueName = "focuserror";
+        String queueName = "focusError";
         channel.queueDeclare(queueName, false, false, false, null);
 
         String bindingKey = "error";
-        channel.queueBind(queueName, DirectProducer.EXCHANGE_NAME, bindingKey);
+        channel.queueBind(queueName, BackupExProducer.EXCHANGE_NAME, bindingKey);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println(envelope.getRoutingKey() + " " + message);
+                log.info("get message, routingKey: {}, message: {}", envelope.getRoutingKey(), message);
             }
         };
 
