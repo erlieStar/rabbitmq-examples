@@ -30,7 +30,7 @@ public class DlxProcessConsumer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        String queueName = "dlx_accept";
+        String queueName = "dlxQueue";
         channel.queueDeclare(queueName, false, false, false, null);
         channel.queueBind(queueName, DLX_EXCHANGE_NAME, "#");
 

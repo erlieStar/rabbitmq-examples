@@ -7,7 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 public class QosProducer {
 
-		public static final String EXCHANGE_NAME = "msg_durable";
+		public static final String EXCHANGE_NAME = "qos_exchange";
 
 		public static void main(String[] args) throws IOException, TimeoutException {
 				ConnectionFactory factory = new ConnectionFactory();
@@ -18,9 +18,9 @@ public class QosProducer {
 				channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
 				String routingKey = "info";
-				String message = "hello rabbitmq";
 
 				for (int i = 0; i < 10; i++) {
+						String message = "hello rabbitmq " + i;
 						channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
 				}
 				channel.close();

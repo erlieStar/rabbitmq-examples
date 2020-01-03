@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  */
 public class GetMessageProducer {
 
-    public final static String EXCHANGE_NAME = "direct_logs";
+    public final static String EXCHANGE_NAME = "getMessage_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -27,7 +27,7 @@ public class GetMessageProducer {
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         for (int i = 0; i < 3; i++) {
-            String message = "Hello World" + (i + 1);
+            String message = "Hello RabbitMQ" + (i + 1);
             channel.basicPublish(EXCHANGE_NAME, "error", null, message.getBytes());
         }
         channel.close();

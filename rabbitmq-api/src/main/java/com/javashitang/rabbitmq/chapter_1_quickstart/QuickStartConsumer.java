@@ -5,6 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+/**
+ * 需要说明的几点如下：
+ * 1.我在consumer和producer都创建了同一个exchange（exchange已经有的话不会重复创建，queue也是）
+ * 是为了防止程序启动报错，因为使用一个没有创建的exchange会报错
+ * 2.跑后续的demo的时候，一定要先启动consumer，后启动producer，因为我只在consumer中声明了exchange和queue的绑定关系
+ * 如果先启动producer，因为exchange找不到相应的queue，所以消息会丢失
+ */
 @Slf4j
 public class QuickStartConsumer {
 
@@ -23,13 +30,14 @@ public class QuickStartConsumer {
         // 3.通过connection创建一个channel
         Channel channel = connection.createChannel();
 
-        String queueName = "focusError";
+        String queueName = "quickStartErrorQueue";
         String bindingKey = "error";
-        // 5.声明交换器
+        // 4.创建交换器
+        // 因为不知道生产者和消费者程序哪个先启动，所以一般的做法是在生产者和消费者2边都创建交换器（有的话不会重复创建）
         channel.exchangeDeclare(QuickStartProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         /**
-         * 6.声明（创建）一个队列
+         * 5.声明（创建）一个队列
          * queue: 队列名字
          * durable: 是否持久化
          * exclusive: 是否独占
@@ -37,10 +45,10 @@ public class QuickStartConsumer {
          * arguments: 扩展参数
          */
         channel.queueDeclare(queueName, true, false, false ,null);
-        // 7.绑定交换机和队列
+        // 6.绑定交换机和队列
         channel.queueBind(queueName, QuickStartProducer.EXCHANGE_NAME, bindingKey);
 
-        // 8.创建消费者
+        // 7.创建消费者
         Consumer quickStartConsumer = new DefaultConsumer(channel) {
 
             @Override
@@ -50,7 +58,7 @@ public class QuickStartConsumer {
             }
         };
 
-        // 9.消费者开始消费数据
+        // 8.消费者开始消费数据
         channel.basicConsume(queueName , true, quickStartConsumer);
 
     }

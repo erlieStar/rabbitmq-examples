@@ -26,7 +26,7 @@ public class GetMessageConsumer {
         final Channel channel = connection.createChannel();
         channel.exchangeDeclare(GetMessageProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String queueName = "focuserror";
+        String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
         channel.queueBind(queueName, GetMessageProducer.EXCHANGE_NAME, "error");
 

@@ -16,8 +16,8 @@ import java.util.concurrent.TimeoutException;
  */
 public class BackupExProducer {
 
-    public final static String EXCHANGE_NAME = "main-exchange";
-    public final static String BAK_EXCHANGE_NAME = "backup-exchange";
+    public final static String EXCHANGE_NAME = "main_exchange";
+    public final static String BAK_EXCHANGE_NAME = "backup_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -29,7 +29,7 @@ public class BackupExProducer {
         Map<String, Object> argsMap = new HashMap<>();
         argsMap.put("alternate-exchange", BAK_EXCHANGE_NAME);
 
-        channel.exchangeDeclare(EXCHANGE_NAME, "direct", false, false, argsMap);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, false, argsMap);
 
         // 备用交换器
         // Fanout Exchange
@@ -39,7 +39,7 @@ public class BackupExProducer {
         String[] logLevel ={"error","info","warning"};
         for (int i = 0; i < 3; i++) {
             String routingKey = logLevel[i % 3];
-            String message = "Hello World" + (i + 1);
+            String message = "Hello RabbitMQ" + (i + 1);
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
         }
         channel.close();

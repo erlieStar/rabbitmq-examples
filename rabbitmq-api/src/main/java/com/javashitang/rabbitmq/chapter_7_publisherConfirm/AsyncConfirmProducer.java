@@ -46,5 +46,5 @@ public class AsyncConfirmProducer {
 
 				channel.close();
 				connection.close();
-	}
+		}
 }

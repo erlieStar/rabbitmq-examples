@@ -22,7 +22,7 @@ public class PublisherConfirmConsumer {
 				Channel channel = connection.createChannel();
 				channel.exchangeDeclare(AsyncConfirmProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-				String queueName = "focuserror";
+				String queueName = "errorQueue";
 				channel.queueDeclare(queueName, false, false, false, null);
 
 				String bindingKey = "error";

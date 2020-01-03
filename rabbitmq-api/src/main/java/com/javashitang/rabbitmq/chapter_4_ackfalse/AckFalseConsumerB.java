@@ -1,6 +1,7 @@
 package com.javashitang.rabbitmq.chapter_4_ackfalse;
 
 import com.rabbitmq.client.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -9,6 +10,7 @@ import java.util.concurrent.TimeoutException;
  * @Author: lilimin
  * @Date: 2019/8/26 23:30
  */
+@Slf4j
 public class AckFalseConsumerB {
 
     public static void main(String[] args) throws IOException, TimeoutException {
@@ -19,7 +21,7 @@ public class AckFalseConsumerB {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(AckFalseProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String queueName = "focusError";
+        String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
 
         String bindingKey = "error";
@@ -30,7 +32,7 @@ public class AckFalseConsumerB {
             public void handleDelivery(String consumerTag, Envelope envelope,
                 AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println("receive message, routingKey is " + envelope.getRoutingKey() + " message is " + message);
+                log.info("get message, routingKey: {}, message: {}", envelope.getRoutingKey() ,message);
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };

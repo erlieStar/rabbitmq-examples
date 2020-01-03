@@ -1,6 +1,7 @@
 package com.javashitang.rabbitmq.chapter_5_backupExchange;
 
 import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -25,9 +26,9 @@ public class MainConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, "direct");
+        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String queueName = "focusError";
+        String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
 
         String bindingKey = "error";

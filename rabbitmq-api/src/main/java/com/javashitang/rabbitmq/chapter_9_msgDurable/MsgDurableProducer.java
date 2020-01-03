@@ -5,13 +5,15 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MessageProperties;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+@Slf4j
 public class MsgDurableProducer {
 
-		public static final String EXCHANGE_NAME = "msg_durable";
+		public static final String EXCHANGE_NAME = "msg_durable_exchange";
 
 		public static void main(String[] args) throws IOException, TimeoutException {
 				ConnectionFactory factory = new ConnectionFactory();
@@ -22,12 +24,12 @@ public class MsgDurableProducer {
 				channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
 				String[] logLevel = {"error", "warning"};
-				// 将当前信道设置成事务模式
-				channel.txSelect();
+
 				for (int i = 0; i < 10; i++) {
 						String routingKey = logLevel[i % 2];
 						String message = "hello rabbit " + i;
 						channel.basicPublish(EXCHANGE_NAME, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+						log.info("send message: {}", message);
 				}
 				channel.close();
 				connection.close();

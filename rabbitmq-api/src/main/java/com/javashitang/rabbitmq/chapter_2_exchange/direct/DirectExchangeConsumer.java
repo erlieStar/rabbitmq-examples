@@ -17,10 +17,9 @@ public class DirectExchangeConsumer {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
-        // 声明一个交换机
         channel.exchangeDeclare(DirectExchangeProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String queueName = "focusError";
+        String queueName = "directExchangeErrorQueue";
         String bindingKey = "error";
         // 队列名
         // durable 设置是否持久化。为true则设置队列为持久化。持久化的队列会存盘

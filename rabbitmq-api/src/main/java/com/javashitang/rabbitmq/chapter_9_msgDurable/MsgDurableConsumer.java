@@ -24,7 +24,7 @@ public class MsgDurableConsumer {
 				Channel channel = connection.createChannel();
 				channel.exchangeDeclare(MsgDurableProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, true);
 
-				String queueName = "msg_durable";
+				String queueName = "msgDurablequeue";
 				channel.queueDeclare(queueName, true, false, false, null);
 
 				channel.queueBind(queueName, MsgDurableProducer.EXCHANGE_NAME, "error");

@@ -28,7 +28,7 @@ public class BackupExConsumer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String queueName = "focusNotError";
+        String queueName = "notErrorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
 
         // # 0或多个单词

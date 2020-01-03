@@ -20,7 +20,6 @@ import java.util.concurrent.TimeoutException;
  */
 public class WillMakeDlxConsumer {
 
-
     public static void main(String[] arv) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("www.javashitang.com");
@@ -31,8 +30,7 @@ public class WillMakeDlxConsumer {
 
         String queueName = "dlx_make";
         Map<String, Object> args = new HashMap<>();
-        args.put("x-dead-letter-exchange",
-            DlxProcessConsumer.DLX_EXCHANGE_NAME);
+        args.put("x-dead-letter-exchange", DlxProcessConsumer.DLX_EXCHANGE_NAME);
 
         channel.queueDeclare(queueName, false, true, false, args);
 

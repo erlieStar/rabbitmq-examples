@@ -1,12 +1,15 @@
 package com.javashitang.rabbitmq.chapter_2_exchange.direct;
 
+import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DirectExchangeProducer {
 
-    public final static String EXCHANGE_NAME = "direct_logs";
+    public final static String EXCHANGE_NAME = "direct_exchange";
 
     public static void main(String[] args) throws Exception {
 
@@ -17,11 +20,14 @@ public class DirectExchangeProducer {
         Connection connection = connectionFactory.newConnection();
         Channel channel = connection.createChannel();
 
+        channel.exchangeDeclare(DirectExchangeProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+
         String[] logLevel = {"info", "warning", "error"};
         for (int i = 0; i < 3; i++) {
             String routingKey = logLevel[i % 3];
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info("send message: {}", message);
         }
 
         channel.close();

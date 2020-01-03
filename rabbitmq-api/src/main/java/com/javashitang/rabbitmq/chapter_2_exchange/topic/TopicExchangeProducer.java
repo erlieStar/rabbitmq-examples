@@ -3,12 +3,14 @@ package com.javashitang.rabbitmq.chapter_2_exchange.topic;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
 
+@Slf4j
 public class TopicExchangeProducer {
 
-    public final static String EXCHANGE_NAME = "topic_logs";
+    public final static String EXCHANGE_NAME = "topic_exchange";
 
     public static void main(String[] args) throws Exception {
 
@@ -28,6 +30,7 @@ public class TopicExchangeProducer {
                     String routingKey = String.join(",", Arrays.asList(logLevel[i % 3], module[j % 3], score[k % 3]));
                     String message = "hello rabbitmq routingKey is " + routingKey;
                     channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+                    log.info("send message: {}", message);
                 }
             }
         }

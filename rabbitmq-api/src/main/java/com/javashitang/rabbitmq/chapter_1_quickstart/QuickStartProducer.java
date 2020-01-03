@@ -4,10 +4,12 @@ import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class QuickStartProducer {
 
-    public final static String EXCHANGE_NAME  = "direct_logs";
+    public final static String EXCHANGE_NAME  = "quickStart_exchange";
 
     public static void main(String[] args) throws Exception {
 
@@ -23,14 +25,16 @@ public class QuickStartProducer {
         // 3.通过connection创建一个channel
         Channel channel = connection.createChannel();
 
-        // 4.创建交换机
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        // 4.创建交换器
+        // 因为不知道生产者和消费者程序哪个先启动，所以一般的做法是在生产者和消费者2边都创建交换器（有的话不会重复创建）
+        channel.exchangeDeclare(QuickStartProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String routingKey = "error";
         // 5.通过channel发送数据
         for (int i = 0; i < 5; i++) {
-            String msg = "hello RabbitMQ";
-            channel.basicPublish(EXCHANGE_NAME, routingKey, null, msg.getBytes());
+            String message = "hello rabbitmq " + i;
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info("send message: {}", message);
         }
 
         // 6.记得要关闭相关的连接
