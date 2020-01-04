@@ -13,25 +13,25 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class MsgDurableProducer {
 
-		public static final String EXCHANGE_NAME = "msg_durable_exchange";
+    public static final String EXCHANGE_NAME = "msg_durable_exchange";
 
-		public static void main(String[] args) throws IOException, TimeoutException {
-				ConnectionFactory factory = new ConnectionFactory();
-				factory.setHost("www.javashitang.com");
+    public static void main(String[] args) throws IOException, TimeoutException {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("www.javashitang.com");
 
-				Connection connection = factory.newConnection();
-				Channel channel = connection.createChannel();
-				channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-				String[] logLevel = {"error", "warning"};
+        String[] logLevel = {"error", "warning"};
 
-				for (int i = 0; i < 10; i++) {
-						String routingKey = logLevel[i % 2];
-						String message = "hello rabbit " + i;
-						channel.basicPublish(EXCHANGE_NAME, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
-						log.info("send message: {}", message);
-				}
-				channel.close();
-				connection.close();
-		}
+        for (int i = 0; i < 10; i++) {
+            String routingKey = logLevel[i % 2];
+            String message = "hello rabbit " + i;
+            channel.basicPublish(EXCHANGE_NAME, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+            log.info("send message: {}", message);
+        }
+        channel.close();
+        connection.close();
+    }
 }

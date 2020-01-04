@@ -6,4 +6,5 @@
 /mvnw
 /mvnw.cmd
 /logs
+*.log
 

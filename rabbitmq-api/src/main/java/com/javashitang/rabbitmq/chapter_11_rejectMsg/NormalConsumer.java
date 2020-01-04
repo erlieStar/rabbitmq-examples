@@ -1,5 +1,6 @@
-package com.javashitang.rabbitmq.chapter_4_ackfalse;
+package com.javashitang.rabbitmq.chapter_11_rejectMsg;
 
+import com.javashitang.rabbitmq.chapter_4_autoAckfalse.AutoAckFalseProducer;
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2019/8/26 23:30
  */
 @Slf4j
-public class AckFalseConsumerA {
+public class NormalConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -20,13 +21,13 @@ public class AckFalseConsumerA {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare(AckFalseProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        channel.exchangeDeclare(AutoAckFalseProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
 
         String bindingKey = "error";
-        channel.queueBind(queueName, AckFalseProducer.EXCHANGE_NAME, bindingKey);
+        channel.queueBind(queueName, AutoAckFalseProducer.EXCHANGE_NAME, bindingKey);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override

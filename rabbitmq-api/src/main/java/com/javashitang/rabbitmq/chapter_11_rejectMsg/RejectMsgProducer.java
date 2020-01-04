@@ -1,18 +1,21 @@
-package com.javashitang.rabbitmq.chapter_4_ackfalse;
+package com.javashitang.rabbitmq.chapter_11_rejectMsg;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @Author: lilimin
- * @Date: 2019/8/26 23:32
+ * 一般情况下，如果队列中的消息发送到消费者后，消费者不对消息进行确认。
+ * 那么消息会一直留在队列中，直到确认才会删除。
+ * 消费者与rabbitmq的连接中断，rabbitmq才会考虑将消息重新投递给另一个消费者
  */
-public class AckFalseProducer {
+@Slf4j
+public class RejectMsgProducer {
 
     public static final String EXCHANGE_NAME = "ackFalse_exchange";
 
@@ -25,9 +28,11 @@ public class AckFalseProducer {
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
+        String routingKey = "error";
         for (int i = 0; i < 3; i++) {
-            String message = "Hello RabbitMQ " + i;
-            channel.basicPublish(EXCHANGE_NAME, "error", null, message.getBytes());
+            String message = "hello rabbitmq " + i;
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info("send message, routingKey: {}, message: {}", routingKey ,message);
         }
         channel.close();
         connection.close();

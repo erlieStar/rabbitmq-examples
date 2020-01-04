@@ -34,7 +34,7 @@ public class QuickStartProducer {
         for (int i = 0; i < 5; i++) {
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
-            log.info("send message: {}", message);
+            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
 
         // 6.记得要关闭相关的连接

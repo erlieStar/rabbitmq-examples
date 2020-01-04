@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_3_getMessage;
+package com.javashitang.rabbitmq.chapter_3_getMsg;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2019/8/26 23:30
  */
 @Slf4j
-public class GetMessageConsumer {
+public class GetMsgConsumer {
 
     public static void main(String[] args)
         throws IOException, TimeoutException, InterruptedException {
@@ -24,11 +24,11 @@ public class GetMessageConsumer {
 
         Connection connection = factory.newConnection();
         final Channel channel = connection.createChannel();
-        channel.exchangeDeclare(GetMessageProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        channel.exchangeDeclare(GetMsgProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
-        channel.queueBind(queueName, GetMessageProducer.EXCHANGE_NAME, "error");
+        channel.queueBind(queueName, GetMsgProducer.EXCHANGE_NAME, "error");
 
         while(true) {
             GetResponse getResponse = channel.basicGet(queueName, true);

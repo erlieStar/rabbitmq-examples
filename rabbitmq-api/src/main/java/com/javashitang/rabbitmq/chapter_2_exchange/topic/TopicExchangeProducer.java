@@ -30,7 +30,7 @@ public class TopicExchangeProducer {
                     String routingKey = String.join(",", Arrays.asList(logLevel[i % 3], module[j % 3], score[k % 3]));
                     String message = "hello rabbitmq routingKey is " + routingKey;
                     channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
-                    log.info("send message: {}", message);
+                    log.info("send message, routingKey: {}, message: {}", routingKey, message);
                 }
             }
         }

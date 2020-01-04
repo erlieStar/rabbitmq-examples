@@ -27,7 +27,7 @@ public class DirectExchangeProducer {
             String routingKey = logLevel[i % 3];
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
-            log.info("send message: {}", message);
+            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
 
         channel.close();

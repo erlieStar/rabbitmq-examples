@@ -11,6 +11,8 @@ import com.rabbitmq.client.Envelope;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -26,7 +28,12 @@ public class MainConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        channel.exchangeDeclare(BackupExProducer.BAK_EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+
+        Map<String, Object> argsMap = new HashMap<>();
+        argsMap.put("alternate-exchange", BackupExProducer.BAK_EXCHANGE_NAME);
+
+        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, false, argsMap);;
 
         String queueName = "errorQueue";
         channel.queueDeclare(queueName, false, false, false, null);
@@ -44,7 +51,5 @@ public class MainConsumer {
         };
 
         channel.basicConsume(queueName, true, consumer);
-        channel.close();
-        connection.close();
     }
 }

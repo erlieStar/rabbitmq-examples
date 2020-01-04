@@ -1,9 +1,10 @@
-package com.javashitang.rabbitmq.chapter_3_getMessage;
+package com.javashitang.rabbitmq.chapter_3_getMsg;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -12,7 +13,8 @@ import java.util.concurrent.TimeoutException;
  * @Author: lilimin
  * @Date: 2019/8/26 23:32
  */
-public class GetMessageProducer {
+@Slf4j
+public class GetMsgProducer {
 
     public final static String EXCHANGE_NAME = "getMessage_exchange";
 
@@ -26,9 +28,11 @@ public class GetMessageProducer {
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
+        String routingKey = "error";
         for (int i = 0; i < 3; i++) {
-            String message = "Hello RabbitMQ" + (i + 1);
-            channel.basicPublish(EXCHANGE_NAME, "error", null, message.getBytes());
+            String message = "hello rabbitmq" + (i + 1);
+            channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
         channel.close();
         connection.close();
