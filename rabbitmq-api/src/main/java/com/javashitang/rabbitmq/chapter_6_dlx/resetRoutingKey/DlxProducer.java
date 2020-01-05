@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class DlxProducer {
 
-    public final static String EXCHANGE_NAME = "dlx_exchange";
+    public static final String EXCHANGE_NAME = "dlx_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();

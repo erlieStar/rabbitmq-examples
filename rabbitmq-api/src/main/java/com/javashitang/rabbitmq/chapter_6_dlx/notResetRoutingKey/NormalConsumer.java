@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class NormalConsumer {
 
-    public final static String DLX_EXCHANGE_NAME = "accept_dlx_exchange";
+    public static final String DLX_EXCHANGE_NAME = "accept_dlx_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();

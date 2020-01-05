@@ -35,7 +35,7 @@ public class AutoAckFalseConsumerB {
                 try {
                     // 当我们正常消息，手动ack后，消息就会从mq中删除
                     // multiple为false表示一条一条确认
-                    channel.basicAck(envelope.getDeliveryTag(), false);
+                    channel.basicAck(envelope.getDeliveryTag(), true);
                 } catch (Exception e) {
                     // 发生异常，发送nack，根据requeue参数来决定是将消息丢弃开始还是再重新放回队列
                     channel.basicNack(envelope.getDeliveryTag(), false, false);

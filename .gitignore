@@ -1,5 +1,6 @@
 *.iml
 /target
+/rabbitmq-api/target
 /.idea
 /.mvn
 /server_log

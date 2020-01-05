@@ -49,7 +49,7 @@ public class QuickStartConsumer {
         channel.queueBind(queueName, QuickStartProducer.EXCHANGE_NAME, bindingKey);
 
         // 7.创建消费者
-        Consumer quickStartConsumer = new DefaultConsumer(channel) {
+        Consumer consumer = new DefaultConsumer(channel) {
 
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -59,7 +59,7 @@ public class QuickStartConsumer {
         };
 
         // 8.消费者开始消费数据
-        channel.basicConsume(queueName , true, quickStartConsumer);
+        channel.basicConsume(queueName , true, consumer);
 
     }
 }

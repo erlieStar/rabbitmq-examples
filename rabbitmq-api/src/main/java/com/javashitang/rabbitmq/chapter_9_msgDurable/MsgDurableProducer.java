@@ -1,15 +1,14 @@
 package com.javashitang.rabbitmq.chapter_9_msgDurable;
 
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * 做消息持久化的时候，队列也得做持久化，不然RabbitMQ重启后，队列消失，消息也会消失
+ */
 @Slf4j
 public class MsgDurableProducer {
 
@@ -23,13 +22,12 @@ public class MsgDurableProducer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String[] logLevel = {"error", "warning"};
-
+        String routingKey = "error";
         for (int i = 0; i < 10; i++) {
-            String routingKey = logLevel[i % 2];
             String message = "hello rabbit " + i;
+            // 主要就是将deliveryMode设置为2
             channel.basicPublish(EXCHANGE_NAME, routingKey, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
-            log.info("send message: {}", message);
+            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
         channel.close();
         connection.close();

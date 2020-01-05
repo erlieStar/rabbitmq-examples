@@ -1,17 +1,15 @@
 package com.javashitang.rabbitmq.chapter_7_publisherConfirm;
 
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConfirmListener;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+@Slf4j
 public class AsyncConfirmProducer {
 
-    public final static String EXCHANGE_NAME = "publisher_confirm_exchange";
+    public static final String EXCHANGE_NAME = "async_confirm_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -24,28 +22,32 @@ public class AsyncConfirmProducer {
         // 启用发布者确认模式
         channel.confirmSelect();
 
-        channel.addConfirmListener(new ConfirmListener() {
+        channel.addReturnListener(new ReturnListener() {
             @Override
-            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-
-            }
-
-            @Override
-            public void handleNack(long deliveryTag, boolean multiple)
-                    throws IOException {
-
+            public void handleReturn(int replyCode, String replyText, String exchange, String routingKey, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                log.info("send message error, replyCode: {}, replyText: {}, exchange: {}, routingKey: {}",
+                        replyCode, replyText, exchange, routingKey);
             }
         });
 
-        String[] logLevel = {"error", "warning"};
+        channel.addConfirmListener(new ConfirmListener() {
+            @Override
+            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                log.info("handleAck, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+            }
 
+            @Override
+            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                log.info("handleNack, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+            }
+        });
+
+        String routingKey = "error";
         for (int i = 0; i < 10; i++) {
-            String routingKey = logLevel[i % 2];
-            String message = "hello rabbit " + i;
+            String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
+            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
 
-        channel.close();
-        connection.close();
     }
 }

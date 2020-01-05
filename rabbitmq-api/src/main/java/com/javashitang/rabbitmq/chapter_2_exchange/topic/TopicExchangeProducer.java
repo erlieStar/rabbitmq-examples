@@ -10,7 +10,7 @@ import java.util.Arrays;
 @Slf4j
 public class TopicExchangeProducer {
 
-    public final static String EXCHANGE_NAME = "topic_exchange";
+    public static final String EXCHANGE_NAME = "topic_exchange";
 
     public static void main(String[] args) throws Exception {
 

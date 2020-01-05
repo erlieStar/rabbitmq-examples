@@ -16,10 +16,10 @@ public class TransactionConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(TransactionProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, true);
+        channel.exchangeDeclare(TransactionProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
         String queueName = "transactionQueue";
-        channel.queueDeclare(queueName, true, false, false, null);
+        channel.queueDeclare(queueName, false, false, false, null);
 
         String bindingKey = "error";
         channel.queueBind(queueName, TransactionProducer.EXCHANGE_NAME, bindingKey);

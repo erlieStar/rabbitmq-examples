@@ -1,9 +1,6 @@
 package com.javashitang.rabbitmq.chapter_4_autoAckfalse;
 
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -33,13 +30,25 @@ public class AutoAckFalseProducer {
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
+        channel.confirmSelect();
+        channel.addConfirmListener(new ConfirmListener() {
+            @Override
+            public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+                log.info("handleAck, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+            }
+
+            @Override
+            public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+                log.info("handleNack, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+            }
+        });
+
         String routingKey = "error";
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 100; i++) {
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
             log.info("send message, routingKey: {}, message: {}", routingKey ,message);
         }
-        channel.close();
-        connection.close();
+
     }
 }

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DirectExchangeProducer {
 
-    public final static String EXCHANGE_NAME = "direct_exchange";
+    public static final String EXCHANGE_NAME = "direct_exchange";
 
     public static void main(String[] args) throws Exception {
 

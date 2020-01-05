@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class GetMsgProducer {
 
-    public final static String EXCHANGE_NAME = "getMessage_exchange";
+    public static final String EXCHANGE_NAME = "getMessage_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();

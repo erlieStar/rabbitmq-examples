@@ -10,9 +10,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
-public class BatchConfirmProducer {
+public class ConfirmProducer {
 
-    public static final String EXCHANGE_NAME = "batch_confirm_exchange";
+    public static final String EXCHANGE_NAME = "confirm_exchange";
 
     public static void main(String[] args)
             throws IOException, TimeoutException, InterruptedException {
@@ -30,12 +30,12 @@ public class BatchConfirmProducer {
         for (int i = 0; i < 10; i++) {
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
-            if ((i & 1) == 1) {
-                // 发送的2条消息都确认了才会继续发送
-                channel.waitForConfirmsOrDie();
-                log.info("wait confirm");
+            // 一条一条确认，返回为true，则表示发送成功
+            if (channel.waitForConfirms()) {
+                log.info("send success, routingKey: {}, message: {}", routingKey ,message);
+            } else {
+                log.info("send fail, routingKey: {}, message: {}", routingKey ,message);
             }
-            log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }
         channel.close();
         connection.close();

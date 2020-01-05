@@ -18,8 +18,8 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class BackupExProducer {
 
-    public final static String EXCHANGE_NAME = "main_exchange";
-    public final static String BAK_EXCHANGE_NAME = "backup_exchange";
+    public static final String EXCHANGE_NAME = "main_exchange";
+    public static final String BAK_EXCHANGE_NAME = "backup_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();

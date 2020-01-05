@@ -1,18 +1,13 @@
 package com.javashitang.rabbitmq.chapter_7_publisherConfirm;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class PublisherConfirmConsumer {
+@Slf4j
+public class AsyncConfirmConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -33,12 +28,10 @@ public class PublisherConfirmConsumer {
             public void handleDelivery(String consumerTag, Envelope envelope,
                                        AMQP.BasicProperties properties, byte[] body) throws IOException {
                 String message = new String(body, "UTF-8");
-                System.out.println(envelope.getRoutingKey() + " " + message);
+                log.info("get message, routingKey: {}, message: {}", envelope.getRoutingKey() ,message);
             }
         };
 
         channel.basicConsume(queueName, true, consumer);
-        channel.close();
-        connection.close();
     }
 }
