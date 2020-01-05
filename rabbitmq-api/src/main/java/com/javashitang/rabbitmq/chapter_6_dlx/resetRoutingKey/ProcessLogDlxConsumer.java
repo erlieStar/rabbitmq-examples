@@ -1,13 +1,6 @@
-package com.javashitang.rabbitmq.chapter_6_dlx;
+package com.javashitang.rabbitmq.chapter_6_dlx.resetRoutingKey;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -18,9 +11,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2019/8/26 23:30
  */
 @Slf4j
-public class DlxProcessConsumer {
-
-    public final static String DLX_EXCHANGE_NAME = "dlx_accept";
+public class ProcessLogDlxConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -28,11 +19,11 @@ public class DlxProcessConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
+        channel.exchangeDeclare(NormalConsumer.DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        String queueName = "dlxQueue";
+        String queueName = "dlxLogQueue";
         channel.queueDeclare(queueName, false, false, false, null);
-        channel.queueBind(queueName, DLX_EXCHANGE_NAME, "#");
+        channel.queueBind(queueName, NormalConsumer.DLX_EXCHANGE_NAME, NormalConsumer.DLX_ROUTE_KEY);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override

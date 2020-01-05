@@ -1,17 +1,15 @@
-package com.javashitang.rabbitmq.chapter_6_dlx;
+package com.javashitang.rabbitmq.chapter_6_dlx.resetRoutingKey;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-/**
- * @Author: lilimin
- * @Date: 2019/8/26 23:32
- */
+@Slf4j
 public class DlxProducer {
 
     public final static String EXCHANGE_NAME = "dlx_exchange";
@@ -26,11 +24,12 @@ public class DlxProducer {
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        String[] logLevel ={"error","info","warning"};
+        String[] logLevel = {"error","info","warning"};
         for (int i = 0; i < 3; i++) {
             String routingKey = logLevel[i % 3];
-            String message = "Hello RabbitMQ" + (i + 1);
+            String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+            log.info("send message, routingKey: {}, message: {}", routingKey ,message);
         }
         channel.close();
         connection.close();

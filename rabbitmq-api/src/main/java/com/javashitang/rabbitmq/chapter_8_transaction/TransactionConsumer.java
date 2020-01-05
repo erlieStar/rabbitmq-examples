@@ -1,14 +1,6 @@
 package com.javashitang.rabbitmq.chapter_8_transaction;
 
-import com.javashitang.rabbitmq.chapter_9_msgDurable.MsgDurableProducer;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -24,12 +16,13 @@ public class TransactionConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(MsgDurableProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, true);
+        channel.exchangeDeclare(TransactionProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, true);
 
-        String queueName = "msg_durable";
+        String queueName = "transactionQueue";
         channel.queueDeclare(queueName, true, false, false, null);
 
-        channel.queueBind(queueName, MsgDurableProducer.EXCHANGE_NAME, "error");
+        String bindingKey = "error";
+        channel.queueBind(queueName, TransactionProducer.EXCHANGE_NAME, bindingKey);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override

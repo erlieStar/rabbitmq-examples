@@ -20,17 +20,17 @@ public class TransactionProducer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
 
-        String[] logLevel = {"error", "warning"};
+        String[] logLevel = {"error", "info", "warning"};
         // 将当前信道设置成事务模式
-        // channel.txSelect();
+        channel.txSelect();
         for (int i = 0; i < 10; i++) {
-            String routingKey = logLevel[i % 2];
-            String message = String.format("hello rabbit %s", i);
+            String routingKey = logLevel[i % 3];
+            String message = "hello rabbitmq " + i;
             try {
-                channel.basicPublish(EXCHANGE_NAME, routingKey, true, null, message.getBytes());
+                channel.basicPublish(EXCHANGE_NAME, routingKey, false, null, message.getBytes());
                 // 提交事务
                 channel.txCommit();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 // 回滚事务
                 channel.txRollback();
