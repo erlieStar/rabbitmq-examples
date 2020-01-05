@@ -1,6 +1,6 @@
 spring:
   rabbitmq:
-    host: www.javashitang.com
+    host: myhost
     port: 5672
     username: guest
     password: guest

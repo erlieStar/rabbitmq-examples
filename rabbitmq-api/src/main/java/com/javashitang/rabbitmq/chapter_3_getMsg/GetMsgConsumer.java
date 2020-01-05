@@ -20,7 +20,7 @@ public class GetMsgConsumer {
     public static void main(String[] args)
         throws IOException, TimeoutException, InterruptedException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("www.javashitang.com");
+        factory.setHost("myhost");
 
         Connection connection = factory.newConnection();
         final Channel channel = connection.createChannel();

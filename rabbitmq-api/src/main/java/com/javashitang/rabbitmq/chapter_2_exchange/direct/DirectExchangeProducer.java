@@ -14,7 +14,7 @@ public class DirectExchangeProducer {
     public static void main(String[] args) throws Exception {
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("www.javashitang.com");
+        connectionFactory.setHost("myhost");
         connectionFactory.setPort(5672);
 
         Connection connection = connectionFactory.newConnection();

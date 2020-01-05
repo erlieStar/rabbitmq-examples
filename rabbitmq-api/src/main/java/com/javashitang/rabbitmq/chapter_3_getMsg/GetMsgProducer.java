@@ -20,7 +20,7 @@ public class GetMsgProducer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("www.javashitang.com");
+        factory.setHost("myhost");
 
         Connection connection = factory.newConnection();
 

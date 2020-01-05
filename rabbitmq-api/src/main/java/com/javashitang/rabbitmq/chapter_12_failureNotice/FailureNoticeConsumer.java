@@ -11,7 +11,7 @@ public class FailureNoticeConsumer {
     public static void main(String[] args) throws Exception {
 
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("www.javashitang.com");
+        connectionFactory.setHost("myhost");
 
         Connection connection = connectionFactory.newConnection();
 

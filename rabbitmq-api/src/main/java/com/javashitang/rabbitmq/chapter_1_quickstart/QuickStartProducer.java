@@ -15,7 +15,7 @@ public class QuickStartProducer {
 
         // 1.创建一个ConnectionFactory，并进行配置
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("www.javashitang.com");
+        connectionFactory.setHost("myhost");
         connectionFactory.setPort(5672);
         connectionFactory.setVirtualHost("/");
 
