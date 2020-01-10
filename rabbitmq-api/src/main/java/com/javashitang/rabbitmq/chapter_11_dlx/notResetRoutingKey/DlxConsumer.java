@@ -1,18 +1,9 @@
-package com.javashitang.rabbitmq.chapter_5_backupExchange;
+package com.javashitang.rabbitmq.chapter_11_dlx.notResetRoutingKey;
 
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.BuiltinExchangeType;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Consumer;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -20,7 +11,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2019/8/26 23:30
  */
 @Slf4j
-public class MainConsumer {
+public class DlxConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -28,18 +19,11 @@ public class MainConsumer {
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(BackupExProducer.BAK_EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(NormalConsumer.DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        Map<String, Object> argsMap = new HashMap<>();
-        argsMap.put("alternate-exchange", BackupExProducer.BAK_EXCHANGE_NAME);
-
-        channel.exchangeDeclare(BackupExProducer.EXCHANGE_NAME, BuiltinExchangeType.DIRECT, false, false, argsMap);;
-
-        String queueName = "errorQueue";
+        String queueName = "dlxQueue";
         channel.queueDeclare(queueName, false, false, false, null);
-
-        String bindingKey = "error";
-        channel.queueBind(queueName, BackupExProducer.EXCHANGE_NAME, bindingKey);
+        channel.queueBind(queueName, NormalConsumer.DLX_EXCHANGE_NAME, "#");
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override

@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_6_dlx.notResetRoutingKey;
+package com.javashitang.rabbitmq.chapter_11_dlx.resetRoutingKey;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2019/8/26 23:30
  */
 @Slf4j
-public class DlxConsumer {
+public class ProcessLogDlxConsumer {
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -21,9 +21,9 @@ public class DlxConsumer {
         Channel channel = connection.createChannel();
         channel.exchangeDeclare(NormalConsumer.DLX_EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        String queueName = "dlxQueue";
+        String queueName = "dlxLogQueue";
         channel.queueDeclare(queueName, false, false, false, null);
-        channel.queueBind(queueName, NormalConsumer.DLX_EXCHANGE_NAME, "#");
+        channel.queueBind(queueName, NormalConsumer.DLX_EXCHANGE_NAME, NormalConsumer.DLX_ROUTE_KEY);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override

@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_6_dlx.notResetRoutingKey;
+package com.javashitang.rabbitmq.chapter_11_dlx.notResetRoutingKey;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;

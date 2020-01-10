@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_9_msgDurable;
+package com.javashitang.rabbitmq.chapter_10_msgDurable;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;

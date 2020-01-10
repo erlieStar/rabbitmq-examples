@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_5_backupExchange;
+package com.javashitang.rabbitmq.chapter_8_backupExchange;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;

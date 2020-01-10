@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_8_transaction;
+package com.javashitang.rabbitmq.chapter_9_transaction;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;

@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_6_dlx.resetRoutingKey;
+package com.javashitang.rabbitmq.chapter_11_dlx.resetRoutingKey;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;

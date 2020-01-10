@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_11_rejectMsg;
+package com.javashitang.rabbitmq.chapter_11_dlx.notResetRoutingKey;
 
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;
@@ -10,26 +10,28 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 /**
- * 一般情况下，如果队列中的消息发送到消费者后，消费者不对消息进行确认。
- * 那么消息会一直留在队列中，直到确认才会删除。
- * 消费者与rabbitmq的连接中断，rabbitmq才会考虑将消息重新投递给另一个消费者
+ * 当消息被拒绝，并且requeue=false时，最好将不能处理的消息投入死信队列供以后处理
+ * 消息被路由到死信交换器的时候，可以重新设置路由键（如果不设置默认是消息原来的路由键）
+ * 所以死信队列这块分了2个包，notResetRoutingKey 不重新设置路由键，resetRoutingKey 重新设置路由键
  */
 @Slf4j
-public class RejectMsgProducer {
+public class DlxProducer {
 
-    public static final String EXCHANGE_NAME = "rejectMsg_exchange";
+    public static final String EXCHANGE_NAME = "dlx_exchange";
 
     public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("myhost");
 
         Connection connection = factory.newConnection();
+
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.DIRECT);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
-        String routingKey = "error";
-        for (int i = 0; i < 10; i++) {
+        String[] logLevel = {"error","info","warning"};
+        for (int i = 0; i < 3; i++) {
+            String routingKey = logLevel[i % 3];
             String message = "hello rabbitmq " + i;
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
             log.info("send message, routingKey: {}, message: {}", routingKey ,message);

@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_12_failureNotice;
+package com.javashitang.rabbitmq.chapter_6_failureNotice;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;

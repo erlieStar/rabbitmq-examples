@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.chapter_10_qos;
+package com.javashitang.rabbitmq.chapter_12_qos;
 
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
