@@ -6,14 +6,23 @@
 
 ### chapter_2: 演示了各种exchange的使用
 
-|交换机属性|类型|
+|交换器类型|路由规则|
 |:--:|:--:|
-|Name|交换器名称|
-|Type|交换器类型，有如下四种，direct，topic，fanout，headers|
-|Durability|是否需要持久化，true为持久化。持久化可以将交换器存盘，在服务器重启的时候不会丢失相关信息|
-|Auto Delete|与这个Exchange绑定的Queue或Exchange都与此解绑时，会删除本交换器|
-|Internal|设置是否内置，true为内置。如果是内置交换器，客户端无法发送消息到这个交换器中，只能通过交换器路由到交换器这种方式|
-|argument|其他一些结构化参数|
+|fanout|发送到该交换机的消息都会路由到与该交换机绑定的所有队列上，可以用来做广播|
+|direct|把消息路由到BindingKey和RoutingKey完全匹配的队列中|
+|topic|topic和direct类似，也是将消息发送到RoutingKey和BindingKey相匹配的队列中，只不过可以模糊匹配|
+|headers|性能差，基本不会使用|
+
+1. RoutinKey为一个被“.”号分割的字符串（如com.rabbitmq.client）
+2. BindingKey和RoutingKey也是“.”号分割的字符串
+3. BindKey中可以存在两种特殊字符串“*”和“#”，用于做模糊匹配，其中“\*”用于匹配不多不少一个词，“#”用于匹配多个单词（包含0个，1个）
+
+
+|BindingKey| 能够匹配到的RoutingKey |
+|:--:|:--:|
+| java.# | java.lang，java.util， java.util.concurrent|
+|java.*|java.lang，java.util|
+|\*.\*.uti|com.javashitang.util，org.spring.util|
 
 ### chapter_3: 拉取消息
 
