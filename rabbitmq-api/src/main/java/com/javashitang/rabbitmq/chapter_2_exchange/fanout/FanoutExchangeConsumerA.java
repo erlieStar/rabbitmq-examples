@@ -1,13 +1,19 @@
 package com.javashitang.rabbitmq.chapter_2_exchange.fanout;
 
-import com.javashitang.rabbitmq.chapter_2_exchange.direct.DirectExchangeProducer;
-import com.rabbitmq.client.*;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.BuiltinExchangeType;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.Consumer;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
-public class FanoutExchangeConsumer {
+public class FanoutExchangeConsumerA {
 
     public static void main(String[] args) throws Exception {
 
@@ -21,11 +27,11 @@ public class FanoutExchangeConsumer {
         // 声明一个交换机
         channel.exchangeDeclare(FanoutExchangeProducer.EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
 
-        String queueName = "allQueue";
+        String queueName = "allQueueA";
         String bindingKey = "info";
 
         channel.queueDeclare(queueName, false, false, false ,null);
-        channel.queueBind(queueName, DirectExchangeProducer.EXCHANGE_NAME, bindingKey);
+        channel.queueBind(queueName, FanoutExchangeProducer.EXCHANGE_NAME, bindingKey);
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
