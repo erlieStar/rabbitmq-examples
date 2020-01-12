@@ -13,6 +13,7 @@
 整个流程主要就4个参与者,message,exchange,queue,consumer，我们就来认识一下这4个参与者
 
 ### Message
+
 消息可以设置一些列属性，每种属性的作用可以参考《深入RabbitMQ》一书
 
 |属性名| 用处 |
@@ -32,6 +33,7 @@
 | priority | 指定队列中消息的优先级 |
 
 ### Exchange
+
 接收消息，并根据路由键转发消息到所绑定的队列，常用的属性如下
 
 |交换机属性|类型|
@@ -62,6 +64,7 @@ Fanout交换机转发消息是最快的
 ### Topic Exchange
 
 ![这里写图片描述](https://img-blog.csdn.net/20180915221232488?)
+
 前面说到，direct类型的交换器路由规则是完全匹配RoutingKey和BindingKey。topic和direct类似，也是将消息发送到RoutingKey和BindingKey相匹配的队列中，只不过可以模糊匹配。
 
 1. RoutinKey为一个被“.”号分割的字符串（如com.rabbitmq.client）
@@ -83,6 +86,7 @@ Fanout交换机转发消息是最快的
 headers类型的交换器不依赖于路由键的匹配规则来路由消息，而是根据发送消息内容中的headers属性进行匹配。headers类型的交换器性能差，不实用，基本上不会使用。
 
 ### Queue
+
 队列的常见属性如下
 
 |参数名| 用处 |
@@ -112,26 +116,14 @@ arguments中可以设置的队列的常见参数如下
 
 ### chapter_2: 演示了各种exchange的使用
 
+来回顾一下上面说的各种exchange机器路由规则
+
 |交换器类型|路由规则|
 |:--:|:--:|
 |fanout|发送到该交换机的消息都会路由到与该交换机绑定的所有队列上，可以用来做广播|
 |direct|把消息路由到BindingKey和RoutingKey完全匹配的队列中|
 |topic|topic和direct类似，也是将消息发送到RoutingKey和BindingKey相匹配的队列中，只不过可以模糊匹配|
 |headers|性能差，基本不会使用|
-
-1. RoutinKey为一个被“.”号分割的字符串（如com.rabbitmq.client）
-2. BindingKey和RoutingKey也是“.”号分割的字符串
-3. BindKey中可以存在两种特殊字符串“*”和“#”，用于做模糊匹配，其中“\*”用于匹配不多不少一个词，“#”用于匹配多个单词（包含0个，1个）
-
-需要注意的地方如下：
-1. 当想做广播的时候可以用fanout类型的交换器，因为发送到该交换机的消息都会路由到与该交换机绑定的所有队列上
-2. 当队列有多个消费者时，队列收到的消息将以轮询（round-robin）的方式发送给消费者
-
-|BindingKey| 能够匹配到的RoutingKey |
-|:--:|:--:|
-| java.# | java.lang，java.util， java.util.concurrent|
-|java.*|java.lang，java.util|
-|\*.\*.uti|com.javashitang.util，org.spring.util|
 
 ### chapter_3: 拉取消息
 
@@ -226,6 +218,28 @@ mandatory=false: 出现上述情形，则消息直接被丢弃
 1. 普通confirm模式：每发送一条消息后，调用waitForConfirms()方法，等待服务器端confirm。实际上是一种串行confirm了。
 2. 批量confirm模式：每发送一批消息后，调用waitForConfirms()方法，等待服务器端confirm。
 3. 异步confirm模式：提供一个回调方法，服务端confirm了一条或者多条消息后Client端会回调这个方法。
+
+针对异步confirm，因为经常使用，我想把这个分享的细一下
+
+```
+channel.addConfirmListener(new ConfirmListener() {
+	@Override
+	public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+		log.info("handleAck, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+	}
+
+	@Override
+	public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+		log.info("handleNack, deliveryTag: {}, multiple: {}", deliveryTag, multiple);
+	}
+});
+```
+
+写过异步confirm代码的小伙伴应该对这段代码不陌生，可以看到这里也有deliveryTag和multiple。但是我要说的是这里的deliveryTag和multiple和消息的ack没有一点关系。
+
+confirmListener中的ack: rabbitmq控制的，用来查看消息是否到达exchange
+
+消息的ack: 上面说到可以自动确认，也可以手动确认，用来查看queue中的消息是否被consumer消费
 
 ### chapter_8: 备用交换器
 
