@@ -14,6 +14,7 @@
 
 ### Message
 消息可以设置一些列属性，每种属性的作用可以参考《深入RabbitMQ》一书
+
 |属性名| 用处 |
 |:--:|:--:|
 | contentType | 消息体的MIME类型，如application/json |
@@ -32,6 +33,7 @@
 
 ### Exchange
 接收消息，并根据路由键转发消息到所绑定的队列，常用的属性如下
+
 |交换机属性|类型|
 |:-:|:-:|
 |name|交换器名称|
@@ -66,8 +68,8 @@ Fanout交换机转发消息是最快的
 2. BindingKey和RoutingKey也是“.”号分割的字符串
 3. BindKey中可以存在两种特殊字符串“*”和“#”，用于做模糊匹配，其中“\*”用于匹配不多不少一个词，“#”用于匹配多个单词（包含0个，1个）
 
-|BindIngKey  | 能够匹配到的RoutingKey |
-|--|--|
+|BindIngKey| 能够匹配到的RoutingKey|
+|:--:|:--:|
 | java.# | java.lang，java.util， java.util.concurrent|
 |java.*|java.lang，java.util|
 |\*.\*.uti|com.javashitang.util，org.spring.util|
@@ -234,7 +236,7 @@ mandatory=false: 出现上述情形，则消息直接被丢弃
 RabbitMQ中与事务机制相关的方法有3个
 
 | 方法 | 解释 |
-|--|--|
+|:--:|:--:|
 |channel.txSelect()  | 将当前的信道设置成事务模式|
 |channel.txCommit()|提交事务|
 |channel.txRollback()|回滚事务|
