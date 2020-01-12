@@ -6,6 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+/**
+ * Channel对象提供的ConfirmListener()回调方法只包含deliveryTag（当前Chanel发出的消息序号），
+ * 我们需要自己为每一个Channel维护一个unconfirm的消息序号集合，
+ * 每publish一条数据，集合中元素加1，每回调一次handleAck方法，
+ * unconfirm集合删掉相应的一条（multiple=false）或多条（multiple=true）记录。
+ * 从程序运行效率上看，这个unconfirm集合最好采用有序集合SortedSet存储结构
+ *
+ * 参考自《RabbitMQ实战指南》
+ */
 @Slf4j
 public class AsyncConfirmProducer {
 

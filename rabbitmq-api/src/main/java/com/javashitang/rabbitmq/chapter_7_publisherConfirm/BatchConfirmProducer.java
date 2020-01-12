@@ -32,8 +32,11 @@ public class BatchConfirmProducer {
             channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
             if ((i & 1) == 1) {
                 // 发送的2条消息都确认了才会继续发送
-                channel.waitForConfirmsOrDie();
-                log.info("wait confirm");
+                if (channel.waitForConfirms()) {
+                    log.info("send success");
+                } else {
+                    log.info("send fail");
+                }
             }
             log.info("send message, routingKey: {}, message: {}", routingKey, message);
         }

@@ -52,7 +52,9 @@
 ![这里写图片描述](https://img-blog.csdn.net/20180915221251946?)
 
 **发送到该交换机的消息都会路由到与该交换机绑定的所有队列上，可以用来做广播**
+
 不处理路由键，只需要简单的将队列绑定到交换机上	
+
 Fanout交换机转发消息是最快的
 
 ### Direct Exchage
@@ -178,7 +180,7 @@ myltiple=false: 消息id=deliveryTag的消息，都会被确认
 
 2. basicReject(long deliveryTag, boolean requeue)
 
-basicNack和basicReject的区别只有一个basicNack支持批量拒绝
+basicNack和basicReject的区别只有一个，basicNack支持批量拒绝
 
 deliveryTag和multiple参数前面已经说过。
 
@@ -192,7 +194,7 @@ chapter_6到chapter_10主要简述了消息发布时的权衡
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191223235517386.png?)
 
-我们最常用的就是失败通知和发布者确认
+**我们最常用的就是失败通知和发布者确认**
 
 **当消息不能被路由到某个queue时，我们如何获取到不能正确路由的消息呢？**
 
@@ -219,7 +221,7 @@ mandatory=false: 出现上述情形，则消息直接被丢弃
 2. 批量confirm模式：每发送一批消息后，调用waitForConfirms()方法，等待服务器端confirm。
 3. 异步confirm模式：提供一个回调方法，服务端confirm了一条或者多条消息后Client端会回调这个方法。
 
-针对异步confirm，因为经常使用，我想把这个分享的细一下
+异步confirm模式的性能最高，因此经常使用，我想把这个分享的细一下
 
 ```
 channel.addConfirmListener(new ConfirmListener() {
@@ -237,9 +239,9 @@ channel.addConfirmListener(new ConfirmListener() {
 
 写过异步confirm代码的小伙伴应该对这段代码不陌生，可以看到这里也有deliveryTag和multiple。但是我要说的是这里的deliveryTag和multiple和消息的ack没有一点关系。
 
-confirmListener中的ack: rabbitmq控制的，用来查看消息是否到达exchange
+confirmListener中的ack: rabbitmq控制的，用来确认消息是否到达exchange
 
-消息的ack: 上面说到可以自动确认，也可以手动确认，用来查看queue中的消息是否被consumer消费
+消息的ack: 上面说到可以自动确认，也可以手动确认，用来确认queue中的消息是否被consumer消费
 
 ### chapter_8: 备用交换器
 
