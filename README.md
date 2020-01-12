@@ -302,7 +302,7 @@ basicQos(int prefetchSize, int prefetchCount, boolean global)
 |:--:|:--:|
 |prefetchSize|批量取的消息的总大小，0为不限制|
 |prefetchCount|消费完prefetchCount条（prefetchCount条消息被ack）才再次推送|
-|global|global为true表示对channel进行限制，否则对每个消费者进行限制，因为一个信道允许有多个消费者|
+|global|global为true表示对channel进行限制，否则对每个消费者进行限制，因为一个channel允许有多个消费者|
  
 **为什么要使用qos?**
  
