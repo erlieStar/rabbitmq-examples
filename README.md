@@ -125,40 +125,50 @@ RabbitMQ中与事务机制相关的方法有3个
 
 ### chapter_11: 死信队列
 
-消息变成死信一般是由于以下几种情况
+DLX，全称为Dead-Letter-Exchange，称之为死信交换器。当一个消息在队列中变成死信（dead message）之后，它能被重新发送到另一个交换器中，这个交换器就是DLX，绑定DLX的队列就称之为死信队列。
+DLX也是一个正常的交换器，和一般的交换器没有区别，实际上就是设置某个队列的属性
+
+**消息变成死信一般是由于以下几种情况**
 
 1. 消息被拒绝（Basic.Reject/Basic.Nack）且不重新投递（requeue=false）
 2. 消息过期
 3. 队列达到最大长度
 
-死信交换器和备用交换器的区别
+**死信交换器和备用交换器的区别**
+
 备用交换器：1.消息无法路由时转到备用交换器 2.备用交换器是在声明主交换器的时候定义的
-死信交换器：1.消息已经到达队列，但是被消费者拒绝的消息会转到死信交换器。2.死信交换器是在声明队列的时候定义的
+死信交换器：1.消息已经到达队列，但是被消费者拒绝等的消息会转到死信交换器。2.死信交换器是在声明队列的时候定义的
 
 ### chapter_12: 流量控制（服务质量保证）
 
- 使用qos，只要进行如下2个步骤即可
+**使用qos只要进行如下2个步骤即可**
  
- 1. autoAck设置为false（autoAck=true的时候不生效）
+1. autoAck设置为false（autoAck=true的时候不生效）
  
- 2. 调用basicConsume方法前先调用basicQos方法，这个方法有3个参数
+2. 调用basicConsume方法前先调用basicQos方法，这个方法有3个参数
  
- basicQos(int prefetchSize, int prefetchCount, boolean global)
+basicQos(int prefetchSize, int prefetchCount, boolean global)
  
- |参数名| 含义 |
- |:--:|:--:|
- |prefetchSize|批量取的消息的总大小，0为不限制|
- |prefetchCount|消费完prefetchCount条（prefetchCount条消息被ack）才再次推送|
- |global||
+|参数名| 含义 |
+|:--:|:--:|
+|prefetchSize|批量取的消息的总大小，0为不限制|
+|prefetchCount|消费完prefetchCount条（prefetchCount条消息被ack）才再次推送|
+|global||
  
- 为什么要使用qos?
+**为什么要使用qos?**
  
- 1. 提高服务稳定性。假设消费端有一段时间不可用，导致队列中有上万条未处理的消息，如果开启客户端，
- 巨量的消息推送过来，可能会导致消费端变卡，也有可能直接不可用，所以服务端限流很重要
+1. 提高服务稳定性。假设消费端有一段时间不可用，导致队列中有上万条未处理的消息，如果开启客户端，
+巨量的消息推送过来，可能会导致消费端变卡，也有可能直接不可用，所以服务端限流很重要
  
- 2. 提高吞吐量。当队列有多个消费者时，队列收到的消息以轮询的方式发送给消费者。但由于机器性能等的原因，每个消费者的消费能力不一样，
- 这就会导致一些消费者处理完了消费的消息，而另一些则还堆积了一些消息，会造成整体应用吞吐量的下降
+2. 提高吞吐量。当队列有多个消费者时，队列收到的消息以轮询的方式发送给消费者。但由于机器性能等的原因，每个消费者的消费能力不一样，
+这就会导致一些消费者处理完了消费的消息，而另一些则还堆积了一些消息，会造成整体应用吞吐量的下降
 
 ## springboot-rabbitmq（springboot整合rabbitmq）
 
-![欢迎fork和star](https://github.com/erlieStar/image/blob/master/%E6%AC%A2%E8%BF%8Efork%E5%92%8Cstar.jpg)
+## 联系我
+
+email: erlie139@gmail.com
+
+欢迎大家和我交流，关注公众号**Java识堂**获取我的联系方式
+ 
+![欢迎fork和star](https://img-blog.csdnimg.cn/20200102100200903.jpg)
