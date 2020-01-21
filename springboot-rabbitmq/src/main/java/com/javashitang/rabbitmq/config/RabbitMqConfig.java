@@ -1,6 +1,6 @@
 package com.javashitang.rabbitmq.config;
 
-import com.javashitang.rabbitmq.amqp.LogReceiverListener;
+import com.javashitang.rabbitmq.consumer.LogReceiverListener;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

@@ -1,4 +1,4 @@
-package com.javashitang.rabbitmq.amqp;
+package com.javashitang.rabbitmq.consumer;
 
 import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.Message;
@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogReceiverListener implements ChannelAwareMessageListener {
 
+    /**
+     * 发送消息的生产者在测试包中 MsgProducerTest
+     */
     @Override
     public void onMessage(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
