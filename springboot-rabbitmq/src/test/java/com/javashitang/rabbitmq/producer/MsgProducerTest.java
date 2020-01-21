@@ -1,6 +1,5 @@
 package com.javashitang.rabbitmq.producer;
 
-import ch.qos.logback.core.util.TimeUtil;
 import com.javashitang.rabbitmq.config.RabbitMqConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,20 +14,20 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest
 public class MsgProducerTest {
 
-		@Autowired
-		AmqpTemplate amqpTemplate;
+    @Autowired
+    AmqpTemplate amqpTemplate;
 
-		@Test
-		public void sendMsg() {
-				for (int i = 0; i < 5; i++) {
-						String message = "hello rabbitmq " + i;
-						amqpTemplate.convertAndSend(RabbitMqConfig.LOG_QUEUE, message);
-				}
+    @Test
+    public void sendMsg() {
+        for (int i = 0; i < 5; i++) {
+            String message = "hello rabbitmq " + i;
+            amqpTemplate.convertAndSend(RabbitMqConfig.LOG_QUEUE, message);
+        }
 
-				try {
-						TimeUnit.SECONDS.sleep(3);
-				} catch (InterruptedException e) {
-						e.printStackTrace();
-				}
-		}
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
