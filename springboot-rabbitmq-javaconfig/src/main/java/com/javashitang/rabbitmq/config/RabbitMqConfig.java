@@ -67,6 +67,7 @@ public class RabbitMqConfig {
         container.setQueues(q1);
         container.setMaxConcurrentConsumers(15);
         container.setConcurrentConsumers(15);
+        // 手动确认
         container.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         container.setMessageListener(logReceiverListener);
         return container;

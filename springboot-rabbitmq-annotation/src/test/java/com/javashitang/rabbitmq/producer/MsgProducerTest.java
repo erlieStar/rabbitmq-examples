@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class MsgProducerTest {
 
     @Autowired
-    AmqpTemplate amqpTemplate;
+    private AmqpTemplate amqpTemplate;
 
     @Test
     public void sendMsg() {

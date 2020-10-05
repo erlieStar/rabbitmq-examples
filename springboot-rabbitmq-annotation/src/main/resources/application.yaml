@@ -1,0 +1,20 @@
+spring:
+  rabbitmq:
+    host: myhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+log:
+  exchange: log.exchange
+  info:
+    queue: info.log.queue
+    binding-key: info.log.key
+  error:
+    queue: error.log.queue
+    binding-key: error.log.key
+  all:
+    queue: all.log.queue
+    binding-key: \*.log.key
+
