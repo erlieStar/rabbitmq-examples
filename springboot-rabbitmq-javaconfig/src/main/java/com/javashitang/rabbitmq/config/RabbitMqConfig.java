@@ -4,7 +4,6 @@ import com.javashitang.rabbitmq.consumer.LogReceiverListener;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,8 +18,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
+    public static final String LOG_EXCHANGE = "log.exchange";
+    public static final String LOG_ALL_QUEUE = "all.log.exchange";
+    public static final String LOG_ALL_BINDING_KEY = "*.log.key";
+
     public static final String LOG_QUEUE = "logQueue";
-    public static final String LOG_EXCHANGE = "logExchange";
 
     // ====> declare connectionFactorys <===
     @Bean("msgConnectionFactory")
@@ -34,13 +36,15 @@ public class RabbitMqConfig {
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(vhost);
+        connectionFactory.setPublisherConfirms(true);
+        connectionFactory.setPublisherReturns(true);
         return connectionFactory;
     }
 
     // ====> declare queues <===
-    @Bean(LOG_QUEUE)
+    @Bean(LOG_ALL_QUEUE)
     public Queue queueA1() {
-        return new Queue(LOG_QUEUE, true);
+        return new Queue(LOG_ALL_QUEUE, true);
     }
 
     // ====> declare exchanges <===
@@ -51,16 +55,16 @@ public class RabbitMqConfig {
 
     // ====> declare bindings <===
     @Bean
-    public Binding bindingA1(@Qualifier(LOG_QUEUE) Queue queue,
+    public Binding bindingA1(@Qualifier(LOG_ALL_QUEUE) Queue queue,
                              @Qualifier(LOG_EXCHANGE) DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(LOG_QUEUE);
+        return BindingBuilder.bind(queue).to(exchange).with(LOG_ALL_BINDING_KEY);
     }
-    // ====> declare containers <===
 
+    // ====> declare containers <===
     @Bean
     public SimpleMessageListenerContainer container(
             @Qualifier("msgConnectionFactory") ConnectionFactory connectionFactory,
-            @Qualifier(LOG_QUEUE) Queue q1,
+            @Qualifier(LOG_ALL_QUEUE) Queue q1,
             LogReceiverListener logReceiverListener) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -72,37 +76,16 @@ public class RabbitMqConfig {
         container.setMessageListener(logReceiverListener);
         return container;
     }
+
     // ====> declare templates <===
-    public AmqpTemplate msgRabbitTemplate(@Qualifier("msgConnectionFactory") ConnectionFactory connectionFactory) {
+    @Bean
+    public RabbitTemplate rabbitTemplate(@Qualifier("msgConnectionFactory") ConnectionFactory connectionFactory,
+                                          ReturnCallback returnCallback, ConfirmCallback confirmCallback) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setReturnCallback(returnCallback);
+        rabbitTemplate.setConfirmCallback(confirmCallback);
+        // 要想使 returnCallback 生效，必须设置为true
+        rabbitTemplate.setMandatory(true);
         return rabbitTemplate;
-    }
-
-    // 失败通知
-    @Bean
-    public RabbitTemplate.ReturnCallback returnCallback() {
-        return new RabbitTemplate.ReturnCallback() {
-
-            @Override
-            public void returnedMessage(Message message, int replyCode, String replyText,
-                String exchange, String routingKey) {
-                System.out.println("无法正确路由的消息，需要考虑另行处理");
-            }
-        };
-    }
-
-    // 发布者确认
-    @Bean
-    public RabbitTemplate.ConfirmCallback confirmCallback() {
-        return new RabbitTemplate.ConfirmCallback() {
-            @Override
-            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-                if (ack) {
-                    System.out.println("消息成功发送给mq");
-                } else {
-                    System.out.println("消息发送mq失败");
-                }
-            }
-        };
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 /**
  * @Author: lilimin
  * @Date: 2019/12/28 13:28
+ *
+ * 通过 RabbitMqConfig 设置，消息将被这个类接收
  */
 @Component
 public class LogReceiverListener implements ChannelAwareMessageListener {

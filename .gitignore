@@ -10,4 +10,5 @@
 /mvnw.cmd
 /logs
 *.log
+/**/.idea
 
