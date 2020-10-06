@@ -16,5 +16,5 @@ log:
     binding-key: error.log.key
   all:
     queue: all.log.queue
-    binding-key: \*.log.key
+    binding-key: '*.log.key'
 

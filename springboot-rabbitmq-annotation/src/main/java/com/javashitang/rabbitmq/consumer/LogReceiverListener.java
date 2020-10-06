@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogReceiverListener {
 
+    /**
+     * 接收info级别的日志
+     */
     @RabbitListener(
             bindings = @QueueBinding(
                     value = @Queue(value = "${log.info.queue}", durable = "true"),
@@ -29,14 +32,12 @@ public class LogReceiverListener {
     @RabbitHandler
     public void infoLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
-        try {
-            log.info("infoLogQueue 收到的消息为: {}", msg);
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-        } catch (Exception e) {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
-        }
+        log.info("infoLogQueue 收到的消息为: {}", msg);
     }
 
+    /**
+     * 接收所有的日志
+     */
     @RabbitListener(
             bindings = @QueueBinding(
                     value = @Queue(value = "${log.all.queue}", durable = "true"),
@@ -47,11 +48,6 @@ public class LogReceiverListener {
     @RabbitHandler
     public void allLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
-        try {
-            log.info("allLogQueue 收到的消息为: {}", msg);
-            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-        } catch (Exception e) {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
-        }
+        log.info("allLogQueue 收到的消息为: {}", msg);
     }
 }
