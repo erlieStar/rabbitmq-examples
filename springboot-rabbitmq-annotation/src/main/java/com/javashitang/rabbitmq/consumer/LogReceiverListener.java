@@ -21,16 +21,16 @@ public class LogReceiverListener {
 
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value = "${info.log.queue}", durable = "true"),
+                    value = @Queue(value = "${log.info.queue}", durable = "true"),
                     exchange = @Exchange(value = "${log.exchange}", type = ExchangeTypes.TOPIC),
-                    key = "${info.log.key}"
+                    key = "${log.info.binding-key}"
             )
     )
     @RabbitHandler
     public void infoLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
         try {
-            System.out.println("infoLogQueue 收到的消息为 " + msg);
+            log.info("infoLogQueue 收到的消息为: {}", msg);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
@@ -39,16 +39,16 @@ public class LogReceiverListener {
 
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value = "${all.log.queue}", durable = "true"),
+                    value = @Queue(value = "${log.all.queue}", durable = "true"),
                     exchange = @Exchange(value = "${log.exchange}", type = ExchangeTypes.TOPIC),
-                    key = "${all.log.key}"
+                    key = "${log.all.binding-key}"
             )
     )
     @RabbitHandler
     public void allLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
         try {
-            System.out.println("allLogQueue 收到的消息为 " + msg);
+            log.info("allLogQueue 收到的消息为: {}", msg);
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (Exception e) {
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
