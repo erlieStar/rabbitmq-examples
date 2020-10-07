@@ -6,7 +6,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +30,6 @@ public class LogListenerAuto {
                     key = "${log.info.binding-key}"
             )
     )
-    @RabbitHandler
     public void infoLog(Message message) {
         String msg = new String(message.getBody());
         log.info("infoLogQueue 收到的消息为: {}", msg);
@@ -47,7 +45,6 @@ public class LogListenerAuto {
                     key = "${log.all.binding-key}"
             )
     )
-    @RabbitHandler
     public void allLog(Message message) {
         String msg = new String(message.getBody());
         log.info("allLogQueue 收到的消息为: {}", msg);

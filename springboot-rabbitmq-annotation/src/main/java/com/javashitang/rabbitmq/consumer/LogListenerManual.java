@@ -32,7 +32,6 @@ public class LogListenerManual {
                     key = "${log.info.binding-key}"
             )
     )
-    @RabbitHandler
     public void infoLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
         log.info("infoLogQueue 收到的消息为: {}", msg);
@@ -54,7 +53,6 @@ public class LogListenerManual {
                     key = "${log.all.binding-key}"
             )
     )
-    @RabbitHandler
     public void allLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
         log.info("allLogQueue 收到的消息为: {}", msg);
