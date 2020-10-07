@@ -1,6 +1,5 @@
 package com.javashitang.rabbitmq.consumer;
 
-import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
@@ -30,7 +29,7 @@ public class LogReceiverListener {
             )
     )
     @RabbitHandler
-    public void infoLog(Message message, Channel channel) throws Exception {
+    public void infoLog(Message message) {
         String msg = new String(message.getBody());
         log.info("infoLogQueue 收到的消息为: {}", msg);
     }
@@ -46,7 +45,7 @@ public class LogReceiverListener {
             )
     )
     @RabbitHandler
-    public void allLog(Message message, Channel channel) throws Exception {
+    public void allLog(Message message) {
         String msg = new String(message.getBody());
         log.info("allLogQueue 收到的消息为: {}", msg);
     }
