@@ -13,10 +13,13 @@ import org.springframework.stereotype.Component;
 /**
  * @Author: lilimin
  * @Date: 2019/12/28 13:28
+ *
+ * 消息ack的方式为AUTO
+ * 方法正常结束，spring boot 框架返回ack，发生异常spring boot框架返回nack
  */
 @Slf4j
 @Component
-public class LogReceiverListener {
+public class LogListenerAuto {
 
     /**
      * 接收info级别的日志

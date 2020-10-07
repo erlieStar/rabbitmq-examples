@@ -5,6 +5,9 @@ spring:
     username: guest
     password: guest
     virtual-host: /
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack，默认为auto
 
 log:
   exchange: log.exchange
