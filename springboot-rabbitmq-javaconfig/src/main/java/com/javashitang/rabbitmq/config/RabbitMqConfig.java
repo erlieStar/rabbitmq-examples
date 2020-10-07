@@ -22,8 +22,6 @@ public class RabbitMqConfig {
     public static final String LOG_ALL_QUEUE = "all.log.exchange";
     public static final String LOG_ALL_BINDING_KEY = "*.log.key";
 
-    public static final String LOG_QUEUE = "logQueue";
-
     // ====> declare connectionFactorys <===
     @Bean("msgConnectionFactory")
     public ConnectionFactory msgConnectionFactory(
@@ -33,6 +31,7 @@ public class RabbitMqConfig {
             @Value("${spring.rabbitmq.password}") String password,
             @Value("${spring.rabbitmq.virtual-host}") String vhost) {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(host);
+        connectionFactory.setPort(port);
         connectionFactory.setUsername(username);
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(vhost);
