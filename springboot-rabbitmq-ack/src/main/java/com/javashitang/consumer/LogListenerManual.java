@@ -1,5 +1,6 @@
-package com.javashitang.rabbitmq.consumer;
+package com.javashitang.consumer;
 
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
@@ -13,12 +14,12 @@ import org.springframework.stereotype.Component;
  * @Author: lilimin
  * @Date: 2019/12/28 13:28
  *
- * 消息ack的方式为AUTO（默认的ack的方式）
- * 方法正常结束，spring boot 框架返回ack，发生异常spring boot框架返回nack
+ * 消息ack的方式为MANUAL
+ * 用户需要手动发送ack或者nack
  */
 @Slf4j
 @Component
-public class LogListenerAuto {
+public class LogListenerManual {
 
     /**
      * 接收info级别的日志
@@ -30,23 +31,14 @@ public class LogListenerAuto {
                     key = "${log.info.binding-key}"
             )
     )
-    public void infoLog(Message message) {
+    public void infoLog(Message message, Channel channel) throws Exception {
         String msg = new String(message.getBody());
-        log.info("infoLogQueue 收到的消息为: {}", msg);
-    }
-
-    /**
-     * 接收所有的日志
-     */
-    @RabbitListener(
-            bindings = @QueueBinding(
-                    value = @Queue(value = "${log.all.queue}", durable = "true"),
-                    exchange = @Exchange(value = "${log.exchange}", type = ExchangeTypes.TOPIC),
-                    key = "${log.all.binding-key}"
-            )
-    )
-    public void allLog(Message message) {
-        String msg = new String(message.getBody());
-        log.info("allLogQueue 收到的消息为: {}", msg);
+        System.out.println(String.format("infoLogQueue 收到的消息为: {%s}", msg));
+        try {
+            // 这里写各种业务逻辑
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+        }
     }
 }

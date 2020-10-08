@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>com.javashitang</groupId>
-  <artifactId>springboot-rabbitmq-annotation</artifactId>
+  <artifactId>springboot-rabbitmq-ack</artifactId>
   <version>1.0</version>
 
   <properties>

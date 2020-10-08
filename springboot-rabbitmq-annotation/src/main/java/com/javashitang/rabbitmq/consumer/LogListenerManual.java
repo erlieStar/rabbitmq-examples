@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * @Author: lilimin
  * @Date: 2019/12/28 13:28
  *
- * 消息ack的方式为MANUAL（默认的ack方式）
+ * 消息ack的方式为MANUAL
  * 用户需要手动发送ack或者nack
  */
 @Slf4j

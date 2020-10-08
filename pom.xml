@@ -13,6 +13,7 @@
     <module>rabbitmq-api</module>
     <module>springboot-rabbitmq-javaconfig</module>
     <module>springboot-rabbitmq-annotation</module>
+    <module>springboot-rabbitmq-ack</module>
   </modules>
 
 </project>
