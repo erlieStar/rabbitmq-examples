@@ -22,7 +22,7 @@ springboot-rabbitmq-ack: 消息可靠投递的demo
 
 [RabbitMQ系列教程五：RabbitMQ如何保证消息的可靠投递](https://github.com/erlieStar/rabbitmq-examples/blob/master/docs/RabbitMQ%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E4%BA%94%EF%BC%9ARabbitMQ%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%8A%95%E9%80%92.md)
 
-[RabbitMQ系列教程六：如何处理消费过程中的重复消息?](https://github.com/erlieStar/rabbitmq-examples/blob/master/docs/RabbitMQ%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E5%85%AD%EF%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%B6%88%E8%B4%B9%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%B6%88%E6%81%AF%3F.md)
+[RabbitMQ系列教程六：如何处理消费过程中的重复消息?](https://github.com/erlieStar/rabbitmq-examples/blob/master/docs/RabbitMQ%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E5%85%AD%EF%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%B6%88%E8%B4%B9%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%B6%88%E6%81%AF.md)
 
 ## 联系我
 
