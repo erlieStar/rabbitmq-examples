@@ -7,6 +7,7 @@
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200112224022420.PNG)
 
 github地址：https://github.com/erlieStar/rabbitmq-examples
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200112224845329.jpg?)
 ## 前言
 
