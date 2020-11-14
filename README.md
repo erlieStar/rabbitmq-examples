@@ -24,6 +24,10 @@ springboot-rabbitmq-ack: 消息可靠投递的demo
 
 [RabbitMQ系列教程六：如何处理消费过程中的重复消息?](https://github.com/erlieStar/rabbitmq-examples/blob/master/docs/RabbitMQ%E7%B3%BB%E5%88%97%E6%95%99%E7%A8%8B%E5%85%AD%EF%BC%9A%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E6%B6%88%E8%B4%B9%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E9%87%8D%E5%A4%8D%E6%B6%88%E6%81%AF.md)
 
+有人向小编反映，看教程时图片会裂，因此导出了一个pdf版本，放在docs目录下（小编常年开vpn，一次也没遇到过）
+
+因为加了一个pdf文件，可能git clone命令有点慢，多等一下就行了
+
 ## 联系我
 
 email: erlie139@gmail.com
