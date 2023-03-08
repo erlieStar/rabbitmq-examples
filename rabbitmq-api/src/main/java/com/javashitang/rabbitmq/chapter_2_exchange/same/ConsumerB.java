@@ -1,13 +1,12 @@
-package com.javashitang.rabbitmq.chapter_2_exchange.topic;
+package com.javashitang.rabbitmq.chapter_2_exchange.same;
 
-import com.javashitang.rabbitmq.chapter_2_exchange.direct.DirectExchangeProducer;
 import com.rabbitmq.client.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 @Slf4j
-public class FocusAllConsumer {
+public class ConsumerB {
 
     public static void main(String[] args) throws Exception {
 
@@ -20,7 +19,7 @@ public class FocusAllConsumer {
 
         // 声明一个交换机
         channel.exchangeDeclare(TopicExchangeProducer.EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
-        String queueName = "queueNameA";
+        String queueName = "queueB";
         String bindingKey = "test";
 
         channel.queueDeclare(queueName, false, false, false ,null);
